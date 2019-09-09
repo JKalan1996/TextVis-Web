@@ -19,6 +19,6 @@ def root():
 def _data(parameter):
 	# data preprocessing
 	parameter = json.load(parameter)
-	result = search(parameter,allVedio)
+	result = search(parameter)
 	
 	return json.dumps(result)

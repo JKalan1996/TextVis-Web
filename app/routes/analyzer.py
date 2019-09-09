@@ -1,45 +1,17 @@
-import threading
-
-class MyThread(threading.Thread):
-    def __init__(self,func,args=()):
-        super(MyThread,self).__init__()
-        self.func = func
-        self.args = args
-    def run(self):
-        # with thread_max_num:
-        thread_max_num.acquire()
-        self.result = self.func(*self.args)
-        thread_max_num.release()
-    def get_result(self):
-        try:
-            return self.result
-        except Exception:
-            return None
-
-thread_max_num = threading.BoundedSemaphore(10)
+import psycopg2
+import json
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 
-def search(parameter,vedios):
+def search(parameter):
 
-	result = []
-	def myFunction(parameter,v):
-		flag = True
-		#filter here	
+	database_name = db_name
+    conn = psycopg2.connect(database= database_name, user="postgres", password="TJ.VisLab", host="202.120.188.26",port="5432")
+    cur = conn.cursor()
 
+    cur.execute("select name from videos where name ~ '"+parameter['txt']+"' and year between"+parameter['year'][0]+' and '+parameter['year'][1])
 
-		if flag:
-			result.append(v)
-
-		return
-		
-	li_r = []
-	for v in vedios:
-	    t_r = MyThread(myFunction, args=(parameter, v))
-	    li_r.append(t_r)
-	for t_r in li_r :
-		t_r.start()
-	for t_r in li_r :
-		t_r.join()
+    result = cur.fetchall()
 
 	return result
 	
