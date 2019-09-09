@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Project Title</title>
+		<link type="text/css" rel="stylesheet" href="lib/tipsy/tipsy.css"/>
+		<!-- <link type="text/css" rel="stylesheet" href="lib/jquery-ui/jquery-ui.min.css"/> -->
+		<link type="text/css" rel="stylesheet" href="lib/bootstrap/css/bootstrap.css"/>
+		<link type="text/css" rel="stylesheet" href="lib/contextmenu/jquery.contextmenu.css"/>
+		<link type="text/css" rel="stylesheet" href="css/style.css"/>
+		
+		<script type="text/javascript" src="lib/three.min.js"></script>
+		<script type="text/javascript" src="lib/OrbitControls.js"></script>
+		<script type="text/javascript" src="lib/stats.min.js"></script>
+		<script type="text/javascript" src="lib/d3/d3.min.js"></script>
+		<script type="text/javascript" src="lib/jquery/jquery-1.10.1.min.js"></script>
+		<script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
+		<script type="text/javascript" src="lib/tipsy/jquery.tipsy.js"></script>
+		<script type="text/javascript" src="lib/jquery-ui/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="lib/colorbrewer/colorbrewer.js"></script>
+		<script type="text/javascript" src="lib/contextmenu/jquery.contextmenu.js"></script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-3" style="padding: 0px; margin-right: -4px">
+					<div class="panel panel-default" style="margin: 4px">
+						<div class="panel-heading">
+							<div class="panel-title">
+								Overview
+							</div>
+						</div>
+						<div id="overview" class="panel-body" style="height:0px; padding-bottom:100%">
+						</div>
+					</div>
+
+					<div class="panel panel-default with-nav-tabs" style="margin: 4px;">
+		                <div class="panel-heading">
+		                    <ul class="nav nav-pills">
+		                        <li class="active"><a href="#vview1" data-toggle="tab">Vertical View 1</a></li>
+		                        <li><a href="#vview2" data-toggle="tab">Vertical View 2</a></li>
+		                    </ul>
+		                </div>
+		                <div class="panel-body" style="height:0px; padding-bottom:175%">
+		                    <div class="tab-content">
+		                        <div class="tab-pane fade in active" id="vview1"></div>
+		                        <div class="tab-pane fade" id="vview2"></div>
+		                    </div>
+		                </div>
+	            	</div>
+
+
+				</div>
+				<div class="col-md-9" style="padding: 0px;">
+					<div class="panel panel-default" style="margin: 4px">
+						<div class="panel-heading" style="">
+							<div class="panel-title">
+								<span>
+									Dataset:
+									<select id="dataset" class="selectpicker" onchange="display()">
+									</select>
+								</span>
+							</div>
+							
+						</div>
+						<div id="mainview" class="panel-body" style="margin-top: -4px; margin-bottom: 4px; height:0px; padding-bottom:60%">
+						</div>
+					</div>
+					
+					<div class="panel with-nav-tabs panel-default" style="margin: 4px">
+		                <div class="panel-heading">
+		                    <ul class="nav nav-pills">
+		                        <li class="active"><a href="#hview1" data-toggle="tab">Horizontal View 1</a></li>
+		                        <li><a href="#hview2" data-toggle="tab">Horizontal View 2</a></li>
+		                    </ul>
+		                </div>
+		                <div class="panel-body" style="height:0px; padding-bottom:30%">
+		                    <div class="tab-content">
+		                        <div class="tab-pane fade in active" id="hview1"></div>
+		                        <div class="tab-pane fade" id="hview2"></div>
+		                    </div>
+		                </div>
+	            	</div>
+
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="js/vis.js"></script>
+		<script type="text/javascript" src="js/compsvg.js"></script>
+		<script type="text/javascript" src="js/compwebgl.js"></script>
+		<script type="text/javascript" src="js/driver.js"></script>
+		<br>
+		<br>
+		<footer class="central">&copy; 2015, nancao.org</footer>
+	</body>
+</html>
