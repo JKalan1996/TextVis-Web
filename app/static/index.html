@@ -1,96 +1,291 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Project Title</title>
-		<link type="text/css" rel="stylesheet" href="lib/tipsy/tipsy.css"/>
-		<!-- <link type="text/css" rel="stylesheet" href="lib/jquery-ui/jquery-ui.min.css"/> -->
-		<link type="text/css" rel="stylesheet" href="lib/bootstrap/css/bootstrap.css"/>
-		<link type="text/css" rel="stylesheet" href="lib/contextmenu/jquery.contextmenu.css"/>
-		<link type="text/css" rel="stylesheet" href="css/style.css"/>
-		
-		<script type="text/javascript" src="lib/three.min.js"></script>
-		<script type="text/javascript" src="lib/OrbitControls.js"></script>
-		<script type="text/javascript" src="lib/stats.min.js"></script>
-		<script type="text/javascript" src="lib/d3/d3.min.js"></script>
-		<script type="text/javascript" src="lib/jquery/jquery-1.10.1.min.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
-		<script type="text/javascript" src="lib/tipsy/jquery.tipsy.js"></script>
-		<script type="text/javascript" src="lib/jquery-ui/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="lib/colorbrewer/colorbrewer.js"></script>
-		<script type="text/javascript" src="lib/contextmenu/jquery.contextmenu.js"></script>
-	</head>
-	<body>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-3" style="padding: 0px; margin-right: -4px">
-					<div class="panel panel-default" style="margin: 4px">
-						<div class="panel-heading">
-							<div class="panel-title">
-								Overview
-							</div>
-						</div>
-						<div id="overview" class="panel-body" style="height:0px; padding-bottom:100%">
-						</div>
-					</div>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/dataV.ico">
 
-					<div class="panel panel-default with-nav-tabs" style="margin: 4px;">
-		                <div class="panel-heading">
-		                    <ul class="nav nav-pills">
-		                        <li class="active"><a href="#vview1" data-toggle="tab">Vertical View 1</a></li>
-		                        <li><a href="#vview2" data-toggle="tab">Vertical View 2</a></li>
-		                    </ul>
-		                </div>
-		                <div class="panel-body" style="height:0px; padding-bottom:175%">
-		                    <div class="tab-content">
-		                        <div class="tab-pane fade in active" id="vview1"></div>
-		                        <div class="tab-pane fade" id="vview2"></div>
-		                    </div>
-		                </div>
-	            	</div>
+    <title>Data Video Browser</title>
 
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-				</div>
-				<div class="col-md-9" style="padding: 0px;">
-					<div class="panel panel-default" style="margin: 4px">
-						<div class="panel-heading" style="">
-							<div class="panel-title">
-								<span>
-									Dataset:
-									<select id="dataset" class="selectpicker" onchange="display()">
-									</select>
-								</span>
-							</div>
-							
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+	<link href="lib/jquery-ui/jquery-ui.css" rel="stylesheet">
+
+    <!-- idvx_ styles for this template -->
+	<link href="css/idvx_style.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    
+    <script src="js/ie-emulation-modes-warning.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui/jquery-ui.min.js"></script>
+	
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+<body>
+	<div class="idvx-bg">
+		<!-- Static navbar -->
+		<div class="navbar navbar-default nav-static-top idvx-navbar" role="navigation">
+			<div class="container-fluid idvx-navbar-container">
+				<div class="navbar-header">
+					<div class="idvx-navbar-outer-container">
+						<div class="idvx-navbar-top">
+							<span class="idvx-brand-title">
+								Data Video Browser
+							</span>
 						</div>
-						<div id="mainview" class="panel-body" style="margin-top: -4px; margin-bottom: 4px; height:0px; padding-bottom:60%">
+						<div class="idvx-navbar-bottom">
+							<span class="idvx-brand-desc">
+								<!-- Exploring the Design Space for Applying Animation to Visualization in Data Videos -->
+							</span><br>
+							<span class="idvx-brand-desc">
+								<!-- ACM SIGCHI 2020 -->
+							</span>
 						</div>
 					</div>
-					
-					<div class="panel with-nav-tabs panel-default" style="margin: 4px">
-		                <div class="panel-heading">
-		                    <ul class="nav nav-pills">
-		                        <li class="active"><a href="#hview1" data-toggle="tab">Horizontal View 1</a></li>
-		                        <li><a href="#hview2" data-toggle="tab">Horizontal View 2</a></li>
-		                    </ul>
-		                </div>
-		                <div class="panel-body" style="height:0px; padding-bottom:30%">
-		                    <div class="tab-content">
-		                        <div class="tab-pane fade in active" id="hview1"></div>
-		                        <div class="tab-pane fade" id="hview2"></div>
-		                    </div>
-		                </div>
-	            	</div>
-
 				</div>
 			</div>
 		</div>
+	
+		<!-- Main content wrapper -->
+		<table class="idvx-content-wrapper">
+			<tr class="idvx-content-row">
+				<!-- left side bar -->
+				<td class="idvx-sidebar-fixed">
+					<div class="idvx-sidebar-container">
+						<!-- Top filter panel -->
+						<div id="top-filterPanel" class="panel panel-default idvx-panel">
+							<!-- Search filter panel -->
+	  						<div class="idvx-panel-top">
+	  							<div class="panel-heading idvx-panel-heading">
+									<strong>Search</strong>
+								</div>
+	  							<div class="panel-body idvx-panel-contentPadding">
+	    							<div id="idvx-searchBar">
+	    								<div id="searchArea" class="input-group">
+	    									<span id="magnify"></span>
+	    									<input id="input-searchBar" type="text" class="form-control idvx-searchBar-input" placeholder="Search">
+	    									<span class="input-group-btn idvx-searchBar-buttonSpan">
+	    										<button type="submit" id="idvx-searchBar-button" class="btn btn-default idvx-searchBar-button">search</button>
+	    									</span>
+	    								</div>
+	    								<div class="idvx-searchBar-result">
+	    									Data videos displayed：<span id="idvx-searchBar-relativeNum"></span>
+	    								</div>
+	    							</div>
+	  							</div>
+	  						</div>
 
-		<script type="text/javascript" src="js/vis.js"></script>
-		<script type="text/javascript" src="js/compsvg.js"></script>
-		<script type="text/javascript" src="js/compwebgl.js"></script>
-		<script type="text/javascript" src="js/driver.js"></script>
-		<br>
-		<br>
-		<footer class="central">&copy; 2015, nancao.org</footer>
-	</body>
+	  						<!-- Time filter panel -->
+	  						<div class="idvx-panel-top">
+	  							<div class="panel-heading idvx-panel-heading">
+									<strong>Time Filter</strong>
+								</div>
+	  							<div class="panel-body idvx-panel-contentPadding">
+	    							<div class="idvx-timeFilter-container">
+										<div id="timeFilter"></div>
+	    							</div>
+	    							<div class="idvx-timeFilter-relativeNum">
+	    								<span id="left_Num" class="idvx-left-relativeNum"></span>
+	    								<span  id="right_Num" class="idvx-right-relativeNum"></span>
+	    							</div>
+	    							
+	  							</div>
+	  						</div>
+						</div>
+
+						<!-- Bottom filter panel -->
+						<div id="bottom-filterPanel" class="panel panel-default idvx-panel divx-panel-height">
+							<!-- Object filter panel -->
+	  						<div id="idvx-object" class="idvx-panel-bottom">
+	  							<div class="panel-heading idvx-panel-heading">
+									<strong>Narrative Object</strong>
+								</div>
+	  							<div class="panel-body idvx-panel-contentPadding">
+	    							<div id="idvx-NOpanel" class="btn-group-vertical idvx-btn-choicesGroup" role="group" data-toggle="buttons">
+	    								<label id="object-checkbox01" class="btn btn-primary idvx-bottom-btn active">
+	    									<input type="checkbox" autocomplete="off">
+	    									<span class="idvx-task-subtitle">Category</span> 
+	    									<span class="true"></span>
+	  									</label>
+	  									<label id="object-checkbox02" class="btn btn-primary idvx-bottom-btn active">
+	    									<input type="checkbox" autocomplete="off">
+	    									<span class="idvx-task-subtitle">Part-to-whole</span>
+	    									<span class="true"></span>
+	  									</label>
+	  									<label id="object-checkbox03" class="btn btn-primary idvx-bottom-btn active">
+	    									<input type="checkbox" autocomplete="off">
+	    									<span class="idvx-task-subtitle">Trend</span> 
+	    									<span class="true"></span>
+	  									</label>
+	  									<label id="object-checkbox04" class="btn btn-primary idvx-bottom-btn active">
+	    									<input type="checkbox" autocomplete="off">
+	    									<span class="idvx-task-subtitle">Geo-spatial</span> 
+	    									<span class="true"></span>
+	  									</label>
+	  									<label id="object-checkbox05" class="btn btn-primary idvx-bottom-btn active">
+	    									<input type="checkbox" autocomplete="off">
+	    									<span class="idvx-task-subtitle">Relationship</span> 
+	    									<span class="true"></span>
+	  									</label>
+	    							</div>
+	  							</div>
+	  						</div>
+
+	  						<!-- Task filter panel -->
+	  						<div class="panel-heading idvx-panel-heading">
+								<strong>Narrative Intent</strong>
+							</div>
+	  						<div id="idvx-task" class="panel-body idvx-panel-bottom idvx-panel-contentPadding">
+	  							
+
+								<div class="panel-group" id="idvx-task-collapseGroup" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default idvx-task-panelSingle">
+										<button id="presentation" class="idvx-panel-buttonHeading btn btn-default" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+											<span class="idvx-task-subtitle">Data Presentation</span>
+										</button>
+										
+										<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+											<div class="panel-body idvx-task-panelBody">
+												<div class="idvx-collapsed-container" data-toggle="buttons">
+													<button id="one-one" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Enter">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="one-two" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Update">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="one-three" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Depart">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													
+												</div>
+								    		</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default idvx-task-panelSingle">
+										<button id="interpretation" class="idvx-panel-buttonHeading btn btn-default" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+											<span class="idvx-task-subtitle">Data Interpretation</span>
+										</button>
+										
+										<div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+											<div class="panel-body idvx-task-panelBody">
+												<div class="idvx-collapsed-container" data-toggle="buttons">
+													<button id="two-one" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Emphasize">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="two-two" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Compare">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="two-three" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Concretize">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="two-four" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Repeat">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="two-five" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Transition">
+														<input type="checkbox" autocomplete="off">
+													</button>
+												</div>
+								    		</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default idvx-task-panelSingle">
+										<button id="reasoning" class="idvx-panel-buttonHeading btn btn-default" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+											<span class="idvx-task-subtitle">Data Reasoning</span>
+										</button>
+
+										<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+											<div class="panel-body idvx-task-panelBody">
+												<div class="idvx-collapsed-container" data-toggle="buttons">
+													<button id="three-one" type="button" class="btn btn-primary idvx-collapsed-entry active"  aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Filter">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="three-two" type="button" class="btn btn-primary idvx-collapsed-entry active"  aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Sort">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="three-three" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Show statistics">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="three-four" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Predict">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="three-five" type="button" class="btn btn-primary idvx-collapsed-entry active" aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Correlate">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="three-six" type="button" class="btn btn-primary idvx-collapsed-entry active"  aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Cluster">
+														<input type="checkbox" autocomplete="off">
+													</button>
+													<button id="three-seven" type="button" class="btn btn-primary idvx-collapsed-entry active"  aria-pressed="false" autocomplete="off" data-toggle="tooltip" title="Encode">
+														<input type="checkbox" autocomplete="off">
+													</button>
+												</div>
+								    		</div>
+										</div>
+									</div>
+								</div>
+
+	  						</div>
+						</div>
+					</div>
+				</td>
+
+				<!-- right main area -->
+				<td>
+					<div class="container-fluid">
+						<div class="idvx-row-container">
+							<div class="row">
+								<div id="idvx-videoContainer-panel" class="panel panel-default idvx-clearfix">
+	  								<div id="idvx-videoContainer" class="col-md-12 panel-body">
+	    								<p class="text-muted">Here comes the content</p>
+	  								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body clearfix">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<div style="height: 100%;width: 60%;display: inline-block;margin-left: 30px;">
+							<h4><strong id="idvx-modalTitle" class="modalContent"></strong></h4>
+							<p id="idvx-modalChannel" class="modalContent">Channel: PolyMatter</p>
+							<p id="idvx-modalURL" class="modalContent"></p>
+						</div>
+						<div id="idvx-modalImage" style="width: 180px;height: 114px;padding-top:10px;display: inline-block;float: left;" class="modalContent">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script type="text/javascript" src="js/vis.js"></script>
+	<script type="text/javascript" src="js/compsvg.js"></script>
+    <script src="js/driver.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+  </body>
 </html>
