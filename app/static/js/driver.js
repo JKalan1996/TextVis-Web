@@ -11,7 +11,6 @@ var NItentFull = {
  	"reasoning":["filter", "sort", "show statistics", "predict", "correlate", "cluster", "encode"]
  }
 
-
 var parameter = {
 	'txt':'',
 	'year':[2010,2019],
@@ -168,8 +167,11 @@ function updateDisplayedContent() {
 	var eligibleItems = []; //eligible array
 	$.each(itemsMap, function(i, d) {
 		var ID = d.id;
-		//if an id has been filtered out
-		if(consistentId[ID] == -1)
+		
+		//initialize a identical array : [object mark, intent mark]
+		if(!consistentId[ID] || consistentId[ID] != -1)
+			consistentId[ID] = 1;
+		else
 			return ;
 
 		//filter time range
@@ -178,44 +180,28 @@ function updateDisplayedContent() {
 			return ;
 		}
 
-		//filter the Narrartive Object
-		if(NObject.length >= 0 && NObject.indexOf(d.object) != -1) {
-			if(consistentId[ID] >= 1)
-				eligibleItems.pop();
-
-			consistentId[ID] = -1;
-			return ;
-		}
-
-		//filter the Narrative Intent
-		if(NIntent[d["intent"]].length >= 0 && (NIntent[d["intent"]].indexOf(d["sub-intent"]) != -1)) {
-			if(d["sub-intent"] == "encode" && (ID == 125 || ID == 144 | ID == 164))
-				console.log(ID+"deleted");
-			if(consistentId[ID] >= 1)
-				eligibleItems.pop();
-
-			consistentId[ID] = -1;
-			return ;
-		}
-
 		//filter search txt
 		if(!isRelevantToSearch(d))
 			return ;
 
-		//filter repeated items
-		if(consistentId[ID] >= 1){
-			consistentId[ID]++;
+		//filter the Narrartive Object
+		if(NObject.length >= 1 && NObject.indexOf(d.object) != -1)
 			return ;
-		}
 
-		consistentId[ID] = 1;
+		//filter the Narrative Intent
+		if(NIntent[d["intent"]].length >= 1 && NIntent[d["intent"]].indexOf(d["sub-intent"]) != -1)
+			return ;
 
+		//ignore repeated items
+		if(eligibleItems[eligibleItems.length-1] && (eligibleItems[eligibleItems.length-1]["id"] == ID))
+			return ;
+		
 		//append the eligible item into the Object
 		var itemInfo = {"id":ID, "link":d.link, "name":d.name, "year":d.year, "png":d.png};
 		eligibleItems.push(itemInfo);
 
-		if(d["sub-intent"] == "encode" && (ID == 125 || ID == 144 || ID == 164))
-			console.log(ID+"appended");
+		if(ID == 1)
+			console.log(d);
 	});
 
 	eligibleItems.sort(function(d1, d2) {
@@ -228,7 +214,7 @@ function updateDisplayedContent() {
 		$.each(eligibleItems, function(i, d) {
 			var element = $("<div class=\"idvx-singleContainer\" data-toggle=\"tooltip\" data-target=\"#myModal\">");
 			element.attr("data-id", d.id);
-			element.prop("title", d.name + "(" + d.year + ")");
+			element.prop("data-original-title", d.name + "(" + d.year + ")");
 
 			var image = $("<img class=\"idvx-videoImg\">");
 			image.attr("src", d.png.src);
@@ -299,8 +285,8 @@ function configureTimeFilter() {
 	$("#timeFilter").slider({
 		range: true,
 		min: 201000,
-		max: 201999,
-		values: [201000, 201999],
+		max: 201920,
+		values: [201000, 201920],
 		slide: function(event, ui) {
 
 			timeFilterNum[0] = parseInt(ui.values[0]/ 100);
@@ -321,7 +307,7 @@ function configureTimeFilter() {
 		// },
 		// stop: function(event, ui) {
 			updateDisplayedContent();
-			console.log("ready_slider_stop");
+			console.log("ready_slider");
 		}
 	});
 };
@@ -354,7 +340,7 @@ function onFilterToggleNI() {
 	var collapseContainer = element.parents(".panel-collapse").prev();
 
 	//the names of keyword and its container
-	var keywordOnClick = element.attr("data-original-title").toLowerCase();
+	var keywordOnClick = element.attr("name").toLowerCase();
 	var keywordContainer = collapseContainer.attr("id").toLowerCase();
 
 	if (element.hasClass("active") && ($.inArray(keywordOnClick, parameter.intent[keywordContainer])<0))
@@ -379,7 +365,7 @@ function onFilterResetToggleNI() {
 	if ($(this).next().hasClass("in")){
 		//append all icons into the array
 		for(var i=0; i<elementChildren.length; i++) {
-			parameter.appendToIntent(($(elementChildren[i]).attr("title")).toLowerCase(), keywordOnClick);
+			parameter.appendToIntent($(elementChildren[i]).attr("name").toLowerCase(), keywordOnClick);
 			if($(elementChildren[i]).hasClass("active"))
 				$(elementChildren[i]).removeClass("active");
 		}
