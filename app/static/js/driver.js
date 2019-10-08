@@ -199,9 +199,6 @@ function updateDisplayedContent() {
 		//append the eligible item into the Object
 		var itemInfo = {"id":ID, "link":d.link, "name":d.name, "year":d.year, "png":d.png};
 		eligibleItems.push(itemInfo);
-
-		if(ID == 1)
-			console.log(d);
 	});
 
 	eligibleItems.sort(function(d1, d2) {
