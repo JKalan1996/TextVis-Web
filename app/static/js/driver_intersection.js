@@ -7,9 +7,10 @@
 var NObjectFull = ["category", "part-to-whole", "trend", "geo-spatial", "relationship"];
 var NItentFull = {
 	"presentation":["enter", "update", "depart"],
- 	"interpretation":["emphasize", "compare", "concretize", "repeat"],
- 	"reasoning":["filter", "sort", "compute", "predict", "correlate", "cluster", "encode"]
+ 	"interpretation":["emphasize", "compare", "concretize", "repeat", "transition"],
+ 	"reasoning":["filter", "sort", "show statistics", "predict", "correlate", "cluster", "encode"]
  }
+
 
 var parameter = {
 	'txt':'',
@@ -106,8 +107,6 @@ function setupTooltips(){
 //bind functions concerned to all handlers
 function setupHandlers() {
 	//set up the search handler
-	$("#input-searchBar").on("focus", searchCSS);
-	$("#input-searchBar").blur(searchCSSReturn);
 	$("#input-searchBar").on("keyup", onSearchK);
 	$("#idvx-searchBar-button").on("click", onSearchC);
 
@@ -137,7 +136,7 @@ function loadData() {
 			// 	return ;
 
 			if(!itemsShortMap[d.id])
-				itemsShortMap[d.id] = {"id":d.id, "name":d.name, "source":d.source, "year":d.year, "link":d.link}; //d is an Object
+				itemsShortMap[d.id] = {"id":d.id, "name":d.name, "year":d.year, "link":d.link}; //d is an Object
 
 			//load png
 			d.png = new Image(); //append a new prop(Object) to d Object
@@ -169,11 +168,8 @@ function updateDisplayedContent() {
 	var eligibleItems = []; //eligible array
 	$.each(itemsMap, function(i, d) {
 		var ID = d.id;
-		
-		//initialize a identical array : [object mark, intent mark]
-		if(!consistentId[ID] || consistentId[ID] != -1)
-			consistentId[ID] = 1;
-		else
+		//if an id has been filtered out
+		if(consistentId[ID] == -1)
 			return ;
 
 		//filter time range
@@ -182,25 +178,44 @@ function updateDisplayedContent() {
 			return ;
 		}
 
+		//filter the Narrartive Object
+		if(NObject.length >= 0 && NObject.indexOf(d.object) != -1) {
+			if(consistentId[ID] >= 1)
+				eligibleItems.pop();
+
+			consistentId[ID] = -1;
+			return ;
+		}
+
+		//filter the Narrative Intent
+		if(NIntent[d["intent"]].length >= 0 && (NIntent[d["intent"]].indexOf(d["sub-intent"]) != -1)) {
+			if(d["sub-intent"] == "encode" && (ID == 125 || ID == 144 | ID == 164))
+				console.log(ID+"deleted");
+			if(consistentId[ID] >= 1)
+				eligibleItems.pop();
+
+			consistentId[ID] = -1;
+			return ;
+		}
+
 		//filter search txt
 		if(!isRelevantToSearch(d))
 			return ;
 
-		//filter the Narrartive Object
-		if(NObject.length >= 1 && NObject.indexOf(d.object) != -1)
+		//filter repeated items
+		if(consistentId[ID] >= 1){
+			consistentId[ID]++;
 			return ;
+		}
 
-		//filter the Narrative Intent
-		if(NIntent[d["intent"]] && NIntent[d["intent"]].indexOf(d["sub-intent"]) != -1)
-			return ;
+		consistentId[ID] = 1;
 
-		//ignore repeated items
-		if(eligibleItems[eligibleItems.length-1] && (eligibleItems[eligibleItems.length-1]["id"] == ID))
-			return ;
-		
 		//append the eligible item into the Object
-		var itemInfo = {"id":ID, "link":d.link, "name":d.name, "year":d.year, "png":d.png, "source":d.source};
+		var itemInfo = {"id":ID, "link":d.link, "name":d.name, "year":d.year, "png":d.png};
 		eligibleItems.push(itemInfo);
+
+		if(d["sub-intent"] == "encode" && (ID == 125 || ID == 144 || ID == 164))
+			console.log(ID+"appended");
 	});
 
 	eligibleItems.sort(function(d1, d2) {
@@ -213,7 +228,7 @@ function updateDisplayedContent() {
 		$.each(eligibleItems, function(i, d) {
 			var element = $("<div class=\"idvx-singleContainer\" data-toggle=\"tooltip\" data-target=\"#myModal\">");
 			element.attr("data-id", d.id);
-			element.prop("title", d.name + " (" + d.year + ")");
+			element.prop("title", d.name + "(" + d.year + ")");
 
 			var image = $("<img class=\"idvx-videoImg\">");
 			image.attr("src", d.png.src);
@@ -230,28 +245,10 @@ function updateDisplayedContent() {
 
 }
 
-
 function updateDisplayedCount(){
 	$("#idvx-searchBar-relativeNum").text($("#idvx-videoContainer .idvx-singleContainer").size());
 }
 
-//Search Bar
-function searchCSS() {
-	$(this).attr("placeholder", "");
-	$(this).css("text-indent", 0);
-	$("#magnify").hide();
-}
-
-function searchCSSReturn () {
-	var value = $(this).val();
-	value = $.trim(value);
-	if(!value || value == " "){
-		$(this).val("");
-		$(this).attr("placeholder", "Search title");
-		$(this).css("text-indent", "18px");
-		$("#magnify").show();
-	}
-}
 
 // Search Bar
 function onSearchC() {
@@ -268,8 +265,7 @@ function onSearchK(event) {
 		$("#idvx-searchBar-button").trigger("click");
 }
 
-// var searchKeys = ['intent', 'name', 'object', 'sub-intent', 'subject', 'technique', 'visualization', 'year'];
-var searchKeys = ['name'];
+var searchKeys = ['intent', 'name', 'object', 'sub-intent', 'subject', 'technique', 'visualization', 'year'];
 //if search txt in relevant values
 function isRelevantToSearch(item) {
 	var query = parameter.txt ? parameter.txt.trim() : null;
@@ -303,8 +299,8 @@ function configureTimeFilter() {
 	$("#timeFilter").slider({
 		range: true,
 		min: 201000,
-		max: 201920,
-		values: [201000, 201920],
+		max: 201999,
+		values: [201000, 201999],
 		slide: function(event, ui) {
 
 			timeFilterNum[0] = parseInt(ui.values[0]/ 100);
@@ -325,7 +321,7 @@ function configureTimeFilter() {
 		// },
 		// stop: function(event, ui) {
 			updateDisplayedContent();
-			console.log("ready_slider");
+			console.log("ready_slider_stop");
 		}
 	});
 };
@@ -358,7 +354,7 @@ function onFilterToggleNI() {
 	var collapseContainer = element.parents(".panel-collapse").prev();
 
 	//the names of keyword and its container
-	var keywordOnClick = element.attr("name").toLowerCase();
+	var keywordOnClick = element.attr("data-original-title").toLowerCase();
 	var keywordContainer = collapseContainer.attr("id").toLowerCase();
 
 	if (element.hasClass("active") && ($.inArray(keywordOnClick, parameter.intent[keywordContainer])<0))
@@ -383,7 +379,7 @@ function onFilterResetToggleNI() {
 	if ($(this).next().hasClass("in")){
 		//append all icons into the array
 		for(var i=0; i<elementChildren.length; i++) {
-			parameter.appendToIntent($(elementChildren[i]).attr("name").toLowerCase(), keywordOnClick);
+			parameter.appendToIntent(($(elementChildren[i]).attr("title")).toLowerCase(), keywordOnClick);
 			if($(elementChildren[i]).hasClass("active"))
 				$(elementChildren[i]).removeClass("active");
 		}
@@ -425,11 +421,11 @@ function displayModalDetails(id){
 
 	$("#idvx-modalImage").html("<img class=\"idvx-modalPng\" src=\"img/cutting/" + id + ".PNG\" >");
 
-	$("#idvx-modalTitle").html(item.name + " (" + item.year + ")");
+	$("#idvx-modalTitle").html(item.name + "(" + item.year + ")");
 
-	$("#idvx-modalChannel").html("Source:&nbsp;&nbsp;" + item.source);
+	$("#idvx-modalChannel").html("Channel:" + " PolyMatter");
 
-	$("#idvx-modalURL").html("URL:&nbsp;&nbsp;<a href=\"" + item.link + "\" target=\"_blank\">" + item.link + "</a>");
+	$("#idvx-modalURL").html("URL:&nbsp;<a href=\"" + item.link + "\" target=\"_blank\">" + item.link + "</a>");
 
 	console.log("single Modal loaded.");
 
