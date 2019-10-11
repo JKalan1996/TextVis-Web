@@ -49,7 +49,7 @@ $(document).ready(function() {
 	setupTooltips();
 	loadData();
 	setupHandlers();
-	console.log("ready");
+	// console.log("ready");
 
 	// wire_events();
 	if(!$.cookie(COOKIE_TITLE))
@@ -151,7 +151,7 @@ function loadData() {
 
 			//load png
 			d.png = new Image(); //append a new prop(Object) to d Object
-			d.png.src = "img/cutting/"+d.id+".PNG";
+			d.png.src = "thumbnail/"+d.id+".PNG";
 
 			itemsMap[i] = d;
 		});
@@ -234,7 +234,7 @@ function updateDisplayedContent() {
 	}
 
 	updateDisplayedCount();
-	console.log("ready_filtercontent");
+	// console.log("ready_filtercontent");
 
 	//display all eligible items on screen
 
@@ -270,7 +270,7 @@ function onSearchC() {
 	updateDisplayedContent();
 
 	var txt = parameter.txt;
-	console.log(txt);
+	// console.log(txt);
 }
 
 // Search Bar
@@ -302,13 +302,13 @@ function isRelevantToSearch(item) {
 var timeFilterNum = [2010,2019];  //all corresponded years
 
 function configureTimeFilter() {
-	console.log("ready_filter");
+	// console.log("ready_filter");
 	
 	// Update labels
 	$("#left_Num").text(timeFilterNum[0]);
 	// $("#right_Num").text(timeFilterNum[timeFilterEntries.length-1]);
 	$("#right_Num").text(timeFilterNum[1]);
-	console.log("ready_num");
+	// console.log("ready_num");
 	
 	// Setup the slider
 	$("#timeFilter").slider({
@@ -336,7 +336,7 @@ function configureTimeFilter() {
 		// },
 		// stop: function(event, ui) {
 			updateDisplayedContent();
-			console.log("ready_slider");
+			// console.log("ready_slider");
 		}
 	});
 };
@@ -360,7 +360,7 @@ function onFilterToggleNO() {
 
 	// element.children(".true").toggle();
 	updateDisplayedContent();
-	console.log("onFilterToggle "+ keywordOnClick +" changed");
+	// console.log("onFilterToggle "+ keywordOnClick +" changed");
 }
 
 
@@ -378,7 +378,7 @@ function onFilterToggleNI() {
 		parameter.intent[keywordContainer].splice($.inArray(keywordOnClick, parameter.intent[keywordContainer]), 1);
 
 	updateDisplayedContent();
-	console.log(keywordOnClick+" in "+keywordContainer+" acted");
+	// console.log(keywordOnClick+" in "+keywordContainer+" acted");
 }
 
 function onFilterResetToggleNI() {
@@ -406,7 +406,7 @@ function onFilterResetToggleNI() {
 	} 
 
 	updateDisplayedContent();
-	console.log(keywordOnClick+" has been reset.");
+	// console.log(keywordOnClick+" has been reset.");
 }
 
 function onVideoClick(){
@@ -434,7 +434,7 @@ function displayModalDetails(id){
 	var item = itemsShortMap[id];
 	$("#myModal .modalContent").empty();
 
-	$("#idvx-modalImage").html("<img class=\"idvx-modalPng\" src=\"img/cutting/" + id + ".PNG\" >");
+	$("#idvx-modalImage").html("<img class=\"idvx-modalPng\" src=\"thumbnail/" + id + ".PNG\" >");
 
 	$("#idvx-modalTitle").html(item.name + " (" + item.year + ")");
 
@@ -442,7 +442,7 @@ function displayModalDetails(id){
 
 	$("#idvx-modalURL").html("URL:&nbsp;&nbsp;<a href=\"" + item.link + "\" target=\"_blank\">" + item.link + "</a>");
 
-	console.log("single Modal loaded.ID:" + item.id);
+	// console.log("single Modal loaded.ID:" + item.id);
 
 	$("#myModal").modal("show");
 }
