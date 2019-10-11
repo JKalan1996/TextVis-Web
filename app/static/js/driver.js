@@ -126,7 +126,8 @@ function setupHandlers() {
 
 	//set up Narrative Intent handlers
 	$(".idvx-task-panelBody").on("click", ".idvx-collapsed-entry", onFilterToggleNI); //icons
-	$("button.idvx-panel-buttonHeading").on("click", onFilterResetToggleNI); //collapse buttuns
+	$(".panel-collapse").on("shown.bs.collapse", onFilterResetToggleNI); //collapse buttuns
+	$(".panel-collapse").on("hidden.bs.collapse", onFilterResetToggleNI); //collapse buttuns
 
 	//set up Modals in video container
 	$("#idvx-videoContainer").on("click", ".idvx-singleContainer", onVideoClick);
@@ -382,31 +383,39 @@ function onFilterToggleNI() {
 }
 
 function onFilterResetToggleNI() {
-	var element = $(this); //button
-	var elementChildren = $(this).next().find(".idvx-collapsed-container")[0].children; //the set of small icon
-	var keywordOnClick = element.attr("id");
+	var element = $(this); //collapsed panel
+	var elementChildren = $(this).find(".idvx-collapsed-container")[0].children; //the set of small icon
+	var keywordOnClick = element.prev().attr("id");
+	console.log(keywordOnClick);
 
-	element.children(".true").toggle();
+	element.prev().children(".true").toggle();
 
 	//clean the array
 	parameter.removeAll(keywordOnClick);
+	console.log("removeAll");
 
-	if ($(this).next().hasClass("in")){
+	if (!$(this).hasClass("in")){
 		//append all icons into the array
 		for(var i=0; i<elementChildren.length; i++) {
 			parameter.appendToIntent($(elementChildren[i]).attr("name").toLowerCase(), keywordOnClick);
-			if($(elementChildren[i]).hasClass("active"))
-				$(elementChildren[i]).removeClass("active");
+			if(!$(elementChildren[i]).hasClass("active")){
+				// $(elementChildren[i]).removeClass("active");
+
+				//light all the icons up immediately behind hidden panel
+				$(elementChildren[i]).addClass("active");
+			}
 		}
 	} else {
-		//light all the icons up
+		//check if all icons are lit up
 		$.each(elementChildren, function(i, d) {
-			$(d).addClass("active");
+			if(!$(d).hasClass("active"))
+				$(d).addClass("active");
 		});
+		console.log("activeAll")
 	} 
 
 	updateDisplayedContent();
-	// console.log(keywordOnClick+" has been reset.");
+	console.log(keywordOnClick+" has been reset.");
 }
 
 function onVideoClick(){
