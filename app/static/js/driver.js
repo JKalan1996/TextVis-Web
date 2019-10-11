@@ -4,6 +4,9 @@
 */
 // var compsvg = vis.compsvg().size([$("#mainview").width(), $("#mainview").width() * 0.6]),
 
+//cookie title
+var COOKIE_TITLE = "videobrowser_idvx_tongji_cookie";
+
 var NObjectFull = ["category", "part-to-whole", "trend", "geo-spatial", "relationship"];
 var NItentFull = {
 	"presentation":["enter", "update", "depart"],
@@ -49,6 +52,8 @@ $(document).ready(function() {
 	console.log("ready");
 
 	// wire_events();
+	if(!$.cookie(COOKIE_TITLE))
+		cookieSetting();
 });
 
 //////////////////////////////////////////////////////////////////////
@@ -89,7 +94,12 @@ function display() { //initialize
 	// });
 }
 
-function setupTooltips(){
+//set cookie
+function cookieSetting() {
+	$.cookie(COOKIE_TITLE, true, { expires: 365, path: "/", source:true});
+}
+
+function setupTooltips() {
 	$("#idvx-task").tooltip({
 		selector: '[data-toggle="tooltip"]',
 		container: "body",
@@ -256,6 +266,7 @@ function searchCSSReturn () {
 // Search Bar
 function onSearchC() {
 	parameter.txt = $("#input-searchBar").val().toLowerCase();
+	$("#input-searchBar").blur();
 	updateDisplayedContent();
 
 	var txt = parameter.txt;
@@ -431,7 +442,7 @@ function displayModalDetails(id){
 
 	$("#idvx-modalURL").html("URL:&nbsp;&nbsp;<a href=\"" + item.link + "\" target=\"_blank\">" + item.link + "</a>");
 
-	console.log("single Modal loaded.");
+	console.log("single Modal loaded.ID:" + item.id);
 
 	$("#myModal").modal("show");
 }
