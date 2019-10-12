@@ -1,4 +1,0 @@
-1.输入光标不在字后面(done)
-2.collapse的动画不连贯
-3.tooltip显示错位
-4.resize后背景会变

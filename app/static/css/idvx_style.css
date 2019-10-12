@@ -350,7 +350,7 @@ body {
 	border-color: transparent;
 
 	margin-top: 22px;
-	margin-bottom: 28px;
+	margin-bottom: 27px;
 }
 
 
@@ -1003,8 +1003,23 @@ img.idvx-videoImg {
 	border-radius: 5px;
 }
 
+#idvx-modalTxt {
+	height: 100%;
+	width: 60%;
+	display: inline-block;
+	margin-left: 30px;
+}
+
+#idvx-modalSource {
+	font-size: 14px;
+}
+
+#idvx-modalURL {
+	font-size: 14px;
+}
+
 a {
-	word-wrap: break-word;
+	word-break: break-all;
 }
 
 .ui-slider-horizontal .ui-slider-handle {

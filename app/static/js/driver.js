@@ -447,9 +447,9 @@ function displayModalDetails(id){
 
 	$("#idvx-modalTitle").html(item.name + " (" + item.year + ")");
 
-	$("#idvx-modalChannel").html("Source:&nbsp;&nbsp;" + item.source);
+	$("#idvx-modalSource").html("Source:&nbsp;&nbsp;" + item.source);
 
-	$("#idvx-modalURL").html("URL:&nbsp;&nbsp;<a href=\"" + item.link + "\" target=\"_blank\">" + item.link + "</a>");
+	$("#idvx-modalURL").html("URL:&nbsp;<a href=\"" + item.link + "\" target=\"_blank\">" + item.link + "</a>");
 
 	// console.log("single Modal loaded.ID:" + item.id);
 
